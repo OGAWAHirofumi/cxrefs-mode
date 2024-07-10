@@ -856,34 +856,32 @@ A prefix argument to set filter glob FILTER to exclude specified files."
       (cxrefs-select-next-line)
       (run-hooks 'cxrefs-back-and-next-select-hook))))
 
-(defvar cxrefs-mode-map
-  (let ((map (make-sparse-keymap)))
-    ;; for xref and old etags
-    (define-key map "\M-*"	'cxrefs-marker-go-prev)
-    (define-key map "\M-,"	'cxrefs-marker-go-prev)
-    (define-key map "\M-."	'cxrefs-find-definition)
-;    (define-key map "\C-\M-."	'cxrefs-find-symbol)
-    (define-key map "\M-?"	'cxrefs-find-caller)
-    ;; cxrefs key binds
-    (define-key map "\M-N"	'cxrefs-marker-go-next)
-    (define-key map "\M-P"	'cxrefs-marker-go-prev)
-    (define-key map "\C-cc"	'cxrefs-find-symbol)
-    (define-key map "\C-cv"	'cxrefs-find-callee)
-    (define-key map "\C-c^"	'cxrefs-find-caller)
-    (define-key map "\C-ct"	'cxrefs-find-text)
-    (define-key map "\C-cg"	'cxrefs-find-grep)
-    (define-key map "\C-ce"	'cxrefs-find-egrep)
-    (define-key map "\C-cf"	'cxrefs-find-file)
-    (define-key map "\C-ci"	'cxrefs-find-includer)
-    (define-key map "\C-c="	'cxrefs-find-assign)
-    (define-key map "\C-ch"	'cxrefs-find-caller-hierarchy)
-    (define-key map "\C-cH"	'cxrefs-find-callee-hierarchy)
-;    (define-key map "\C-ca"	'cxrefs-toggle-case)
-;    (define-key map "\C-cr"	'cxrefs-rebuild)
-    (define-key map "\C-cq"	'cxrefs-quit)
-    (define-key map "\C-c\C-c"	'cxrefs-back-and-next-select)
-    map)
-  "Keymap used in Cxrefs mode.")
+(defvar-keymap cxrefs-mode-map
+  :doc "Keymap used in Cxrefs mode."
+  ;; for xref and old etags
+  "M-*"     #'cxrefs-marker-go-prev
+  "M-,"     #'cxrefs-marker-go-prev
+  "M-."     #'cxrefs-find-definition
+;  "C-M-."   #'cxrefs-find-symbol
+  "M-?"     #'cxrefs-find-caller
+  ;; cxrefs key binds
+  "M-N"     #'cxrefs-marker-go-next
+  "M-P"     #'cxrefs-marker-go-prev
+  "C-c c"   #'cxrefs-find-symbol
+  "C-c v"   #'cxrefs-find-callee
+  "C-c ^"   #'cxrefs-find-caller
+  "C-c t"   #'cxrefs-find-text
+  "C-c g"   #'cxrefs-find-grep
+  "C-c e"   #'cxrefs-find-egrep
+  "C-c f"   #'cxrefs-find-file
+  "C-c i"   #'cxrefs-find-includer
+  "C-c ="   #'cxrefs-find-assign
+  "C-c h"   #'cxrefs-find-caller-hierarchy
+  "C-c H"   #'cxrefs-find-callee-hierarchy
+;  "C-c a"   #'cxrefs-toggle-case
+;  "C-c r"   #'cxrefs-rebuild
+  "C-c q"   #'cxrefs-quit
+  "C-c C-c" #'cxrefs-back-and-next-select)
 
 ;;;###autoload
 (define-minor-mode cxrefs-mode
@@ -1153,40 +1151,38 @@ If PREVIEW is non-nil, show window without selecting."
 (defconst cxrefs-select-font-lock-defaults
   '(cxrefs-select-font-lock-keywords t nil nil))
 
-(defvar cxrefs-select-mode-map
-  (let ((map (make-sparse-keymap)))
-    (set-keymap-parent map cxrefs-mode-map)
-    ;; for xref and old etags
-    (define-key map "."		'cxrefs-find-definition)
-    ;; cxrefs key binds
-    (define-key map "\M-n"	'cxrefs-selbuf-go-next)
-    (define-key map "\M-p"	'cxrefs-selbuf-go-prev)
-    (define-key map "n"		'cxrefs-select-next-line)
-    (define-key map "p"		'cxrefs-select-previous-line)
-    (define-key map "N"		'cxrefs-select-depth-next-line)
-    (define-key map "P"		'cxrefs-select-depth-previous-line)
-    (define-key map "c"		'cxrefs-find-symbol)
-    (define-key map "v"		'cxrefs-find-callee)
-    (define-key map "^"		'cxrefs-find-caller)
-    (define-key map "t"		'cxrefs-find-text)
-    (define-key map "g"		'cxrefs-find-grep)
-    (define-key map "e"		'cxrefs-find-egrep)
-    (define-key map "f"		'cxrefs-find-file)
-    (define-key map "i"		'cxrefs-find-includer)
-    (define-key map "="		'cxrefs-find-assign)
-    (define-key map "h"		'cxrefs-find-caller-hierarchy)
-    (define-key map "H"		'cxrefs-find-callee-hierarchy)
-    (define-key map "C"		'cxrefs-toggle-case)
-    (define-key map "R"		'cxrefs-rebuild)
-    (define-key map "\C-c\C-c"	'cxrefs-select-interpret-line)
-    (define-key map "\C-m"	'cxrefs-select-interpret-line)
-    (define-key map [return]	'cxrefs-select-interpret-line)
-    (define-key map " "		'cxrefs-select-preview)
-    (define-key map "\C-t"	'cxrefs-toggle-auto-preview)
-    (define-key map "E"		'cxrefs-toggle-show-excluded)
-    (define-key map "q"		'cxrefs-select-quit)
-    map)
-  "Keymap used in Cxrefs select mode.")
+(defvar-keymap cxrefs-select-mode-map
+  :parent cxrefs-mode-map
+  :doc "Keymap used in Cxrefs select mode."
+  ;; for xref and old etags
+  "."       #'cxrefs-find-definition
+  ;; cxrefs key binds
+  "M-n"     #'cxrefs-selbuf-go-next
+  "M-p"     #'cxrefs-selbuf-go-prev
+  "n"       #'cxrefs-select-next-line
+  "p"       #'cxrefs-select-previous-line
+  "N"       #'cxrefs-select-depth-next-line
+  "P"       #'cxrefs-select-depth-previous-line
+  "c"       #'cxrefs-find-symbol
+  "v"       #'cxrefs-find-callee
+  "^"       #'cxrefs-find-caller
+  "t"       #'cxrefs-find-text
+  "g"       #'cxrefs-find-grep
+  "e"       #'cxrefs-find-egrep
+  "f"       #'cxrefs-find-file
+  "i"       #'cxrefs-find-includer
+  "="       #'cxrefs-find-assign
+  "h"       #'cxrefs-find-caller-hierarchy
+  "H"       #'cxrefs-find-callee-hierarchy
+  "C"       #'cxrefs-toggle-case
+  "R"       #'cxrefs-rebuild
+  "C-c C-c" #'cxrefs-select-interpret-line
+  "C-m"     #'cxrefs-select-interpret-line
+  "RET"     #'cxrefs-select-interpret-line
+  "SPC"     #'cxrefs-select-preview
+  "C-t"     #'cxrefs-toggle-auto-preview
+  "E"       #'cxrefs-toggle-show-excluded
+  "q"       #'cxrefs-select-quit)
 
 ;;;###autoload
 (define-derived-mode cxrefs-select-mode special-mode "Cxrefs-Select"
